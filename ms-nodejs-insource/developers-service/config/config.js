@@ -1,4 +1,5 @@
 const bunyan = require('bunyan');
+const path = require('path');
 // Load package.json
 const pjs = require('../package.json');
 
@@ -14,18 +15,27 @@ module.exports = {
     name,
     version,
     serviceTimeout: 30,
+    data: {
+      developers: path.join(__dirname, '../data/developers.json')
+    },
     log: () => getLogger(name, version, 'debug'),
   },
   production: {
     name,
     version,
     serviceTimeout: 30,
+    data: {
+      developers: path.join(__dirname, '../data/developers.json')
+    },
     log: () => getLogger(name, version, 'info'),
   },
   test: {
     name,
     version,
     serviceTimeout: 30,
+    data: {
+      developers: path.join(__dirname, '../data/developers.json')
+    },
     log: () => getLogger(name, version, 'fatal'),
   },
 };

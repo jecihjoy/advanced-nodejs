@@ -1,0 +1,31 @@
+{
+  "developers": [
+    {
+      "job_title": "Solution Architect",
+      "name": "Jacinta Gichuhi",
+      "organization": "",
+      "username": "jecihjoy",
+      "bio": "Backend Engineer. Spring | Node js Software architect Aspirant.",
+      "github_account": "https://github.com/jecihjoy",
+      "projects": [
+        "customer-order-api",
+        "spring-core-insource",
+        "Kafka-with-java",
+        "openmrs-module-fhir2"
+      ]
+    },
+    {
+      "name": "John Doe",
+      "job_title": "FrontEnd Engineer",
+      "organization": "Twitter",
+      "username": "john",
+      "bio": "FrontEnd Engineer. UI/UX",
+      "github_account": "https://github.com/johndoe",
+      "projects": [
+        "customer-order-ui",
+        "react-core-insource",
+        "react-with-java"
+      ]
+    }
+  ]
+}

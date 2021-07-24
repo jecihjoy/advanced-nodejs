@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 const http = require('http');
-const app = require('express');
 
 const config = require('../config/config.js')[process.env.NODE_ENV || 'development'];
 
 const log = config.log();
 const service = require('../server/AppServer')(config);
 
-const server = http.createServer(app);
+const server = http.createServer(service);
 
 /* a service should not have a fixed port but should randomly choose one */
 server.listen(process.env.PORT || 3000);
