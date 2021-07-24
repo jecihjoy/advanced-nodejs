@@ -1,22 +1,26 @@
+/**
+ * This module creates an express app, registers all the routes and defines middleware functions.
+ * This module uses ServiceRegistry utility functions to handles requests
+ */
 const express = require("express");
 const ServiceRegistry = require("./lib/ServiceRegistry");
 
-const service = express();
+const appService = express();
 
 module.exports = (config) => {
   const log = config.log();
   const serviceRegistry = new ServiceRegistry(log);
-  // Add a request logging middleware in development mode
-  if (service.get("env") === "development") {
-    service.use((req, res, next) => {
+  /* Add a request logging middleware in development mode */
+  if (appService.get("env") === "development") {
+    appService.use((req, res, next) => {
       log.debug(`${req.method}: ${req.url}`);
       return next();
     });
   }
 
-  service.put(
-    "/register/:serviceName/:serviceVersion/:servicePort",
-    (req, res) => {
+  appService
+    .route("/register/:serviceName/:serviceVersion/:servicePort")
+    .put((req, res) => {
       const { serviceName, serviceVersion, servicePort } = req.params;
 
       const serviceIP = req.connection.remoteAddress.includes("::")
@@ -30,19 +34,8 @@ module.exports = (config) => {
         servicePort
       );
       return res.json({ result: serviceKey });
-    }
-  );
-
-  service.get("/find/:serviceName/:serviceVersion", (req, res) => {
-    const { serviceName, serviceVersion } = req.params;
-    const svc = serviceRegistry.getService(serviceName, serviceVersion);
-    if (!svc) return res.status(404).json({ result: "Service not found" });
-    return res.json(svc);
-  });
-
-  service.delete(
-    "/register/:serviceName/:serviceVersion/:servicePort",
-    (req, res) => {
+    })
+    .delete((req, res) => {
       const { serviceName, serviceVersion, servicePort } = req.params;
 
       const serviceIP = req.connection.remoteAddress.includes("::")
@@ -56,13 +49,17 @@ module.exports = (config) => {
         servicePort
       );
       return res.json({ result: serviceKey });
-    }
-  );
+    });
 
-  // eslint-disable-next-line no-unused-vars
-  service.use((error, req, res, next) => {
+  appService.get("/find/:serviceName/:serviceVersion", (req, res) => {
+    const { serviceName, serviceVersion } = req.params;
+    const svc = serviceRegistry.getService(serviceName, serviceVersion);
+    if (!svc) return res.status(404).json({ result: "Service not found" });
+    return res.json(svc);
+  });
+
+  appService.use((error, req, res, next) => {
     res.status(error.status || 500);
-    // Log out the error to the console
     log.error(error);
     return res.json({
       error: {
@@ -70,5 +67,5 @@ module.exports = (config) => {
       },
     });
   });
-  return service;
+  return appService;
 };

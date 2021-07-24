@@ -1,7 +1,7 @@
 /**
  * This class has all the utility functions to
  * REGISTER, UPDATE, RETRIEVE and UNREGISTER the different micro services
- * Server is used for semantic version
+ * Semver is used for semantic versioning
  */
 
 const semver = require("semver");
@@ -10,7 +10,7 @@ class ServiceRegistry {
   constructor(log) {
     this.log = log;
     this.services = {};
-    this.timeout = 1000;
+    this.timeout = 100;
   }
 
   getService(name, version) {
