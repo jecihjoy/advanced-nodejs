@@ -41,3 +41,11 @@ process.stdin.on("data", (chunk) => {
 writeStream.on("close", () => {
   process.stdout.write("File copied successfully");
 });
+
+/** Replacing stream read and write listeners with pipe */
+readStream
+  .pipe(createWriteStream("powder-day-copy1.mp4"))
+  .on("error", console.error);
+
+  /** echo $JAVA_HOME | node file-streams.js (using unix pipe) */
+process.stdin.pipe(createWriteStream('test.txt'));

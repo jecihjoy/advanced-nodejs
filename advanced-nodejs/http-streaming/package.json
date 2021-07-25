@@ -1,0 +1,15 @@
+{
+  "name": "http-streaming",
+  "version": "1.0.0",
+  "description": "",
+  "main": "streaming-from-browser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "multiparty": "^4.2.2"
+  }
+}

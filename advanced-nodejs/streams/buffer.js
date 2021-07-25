@@ -1,6 +1,6 @@
 var fs = require('fs');
 var http =  require('http');
-var file = './powder-day.mp4';
+var file = '../powder-day.mp4';
 
 http.createServer((req, res) => {
 
