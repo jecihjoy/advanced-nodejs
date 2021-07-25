@@ -1,12 +1,23 @@
-const { createReadStream, createWriteStream } = require("fs");
+const { createReadStream, createWriteStream, read } = require("fs");
 
 const readStream = createReadStream("powder-day.mp4");
-const writeStream = createWriteStream("powder-day-copy.mp4");
+const writeStream = createWriteStream("powder-day-copy.mp4", {
+  highWaterMark: 12345678,
+});
 
 /** Reading data chunk by chunk */
 readStream.on("data", (chunk) => {
   /** Writing data chunk by chunk */
-  writeStream.write(chunk);
+  const result = writeStream.write(chunk);
+  if (!result) {
+    console.log("BackPressure");
+    readStream.pause();
+  }
+});
+
+readStream.on("error", (error) => {
+  console.log("an error has occurred.");
+  console.error(error);
 });
 
 readStream.on("end", () => {
@@ -14,9 +25,9 @@ readStream.on("end", () => {
   console.log("Read stream finished");
 });
 
-readStream.on("error", (error) => {
-  console.log("an error has occurred.");
-  console.error(error);
+writeStream.on("drain", () => {
+  console.log("Write stream drained");
+  readStream.resume();
 });
 
 // readStream.pause();
