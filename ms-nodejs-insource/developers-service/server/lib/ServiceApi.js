@@ -58,10 +58,15 @@ class Developers {
     return dev.projects;
   }
 
-  async getDevelopers() {
-    const data = await readFile(this.datafile, "utf8");
-    if (!data) return [];
-    return JSON.parse(data).developers;
+  getDevelopers() {
+    return new Promise((resolve, reject) => {
+      readFile(this.datafile, "utf8").then((data) => {
+        if (!data) return [];
+        resolve(JSON.parse(data).developers);
+      }).catch(err => {
+        reject('Error while reading file')
+      });
+    })
   }
 }
 
