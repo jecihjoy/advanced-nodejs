@@ -9,7 +9,7 @@ class Developers {
   }
 
   async getProfiles() {
-    const data = await this.getDevelopers();
+    const data = await this.getDevelopersData();
 
     return data.map((dev) => ({
       name: dev.name,
@@ -19,7 +19,7 @@ class Developers {
   }
 
   async getAllDevs() {
-    const data = await this.getDevelopers();
+    const data = await this.getDevelopersData();
     return data.map((dev) => ({
       name: dev.name,
       username: dev.username,
@@ -29,7 +29,7 @@ class Developers {
   }
 
   async getAllProjects() {
-    const data = await this.getDevelopers();
+    const data = await this.getDevelopersData();
     const projects = data.reduce((k, v) => {
       if (v.projects) {
         k = [...k, ...v.projects];
@@ -40,7 +40,7 @@ class Developers {
   }
 
   async getDeveloper(username) {
-    const data = await this.getDevelopers();
+    const data = await this.getDevelopersData();
     const dev = data.find((current) => current.username === username);
     if (!dev) return null;
     return {
@@ -52,13 +52,13 @@ class Developers {
   }
 
   async getDeveloperProjects(username) {
-    const data = await this.getDevelopers();
+    const data = await this.getDevelopersData();
     const dev = data.find((current) => current.username === username);
     if (!dev || !dev.projects) return null;
     return dev.projects;
   }
 
-  getDevelopers() {
+  getDevelopersData() {
     return new Promise((resolve, reject) => {
       readFile(this.datafile, "utf8").then((data) => {
         if (!data) return [];
