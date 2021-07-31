@@ -10,7 +10,7 @@ class ServiceRegistry {
   constructor(log) {
     this.log = log;
     this.services = {};
-    this.timeout = 10;
+    this.timeout = 3000;
   }
 
   getService(name, version) {
