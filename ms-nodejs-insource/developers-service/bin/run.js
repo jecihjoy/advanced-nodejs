@@ -42,9 +42,9 @@ server.on('listening', () => {
   });
 
   /** Testing  uncaughtException*/
-  setTimeout(() => {
-    throw new Error('Something happened');
-  }, 10000);
+  // setTimeout(() => {
+  //   throw new Error('Something happened');
+  // }, 10000);
 
   log.info(
     `Hi there! I'm listening on port ${server.address().port} in ${service.get('env')} mode.`,
