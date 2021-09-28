@@ -10,7 +10,8 @@ class CircuitBreaker {
 
   async callService(requestOptions) {
     const endpoint = `${requestOptions.method}:${requestOptions.url}`;
-
+  
+    /* Always block requests when circuit is OPEN*/
     if (!this.canRequest(endpoint)) return false;
 
     // eslint-disable-next-line no-param-reassign
@@ -39,6 +40,7 @@ class CircuitBreaker {
     this.initState(endpoint);
   }
 
+  /* Increement failures then allow request or OPEN the circuit*/
   onFailure(endpoint) {
     const state = this.states[endpoint];
     state.failures += 1;
@@ -47,20 +49,24 @@ class CircuitBreaker {
       state.nextTry = new Date() / 1000 + this.cooldownPeriod;
       console.log(`ALERT! Circuit for ${endpoint} is in state 'OPEN'`);
       console.log(
-        `ALERT! Request retry will happen after ${state.nextTry} seconds`
+        `ALERT! Request retry will happen after ${state.nextTry}`
       );
     }
   }
 
   canRequest(endpoint) {
+    /* Store current request info in state object*/
     if (!this.states[endpoint]) this.initState(endpoint);
     const state = this.states[endpoint];
-    if (state.circuit === "CLOSED") return true;
-    const now = new Date() / 1000;
-    if (state.nextTry <= now) {
+     /* Always allow if the cricuit is CLOSED*/
+    if (state.circuit === "CLOSED") return true; 
+     /* Retry for HALF OPEN circuit*/
+    const requestTime = new Date() / 1000;
+    if (state.nextTry <= requestTime) {
       state.circuit = "HALF";
       return true;
     }
+    /* Block all request if the circuit is OPEN*/
     return false;
   }
 }
