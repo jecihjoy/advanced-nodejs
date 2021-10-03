@@ -3,6 +3,7 @@ const url = require('url');
 const crypto = require('crypto');
 
 const CircuitBreaker = require('../lib/CircuitBreaker');
+const opossumCB = require ('opossum');
 
 const circuitBreaker = new CircuitBreaker();
 class DeveloperService {
