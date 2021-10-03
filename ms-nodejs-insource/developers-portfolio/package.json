@@ -12,7 +12,8 @@
     "axios": "^0.21.1",
     "bunyan": "^1.8.12",
     "crypto": "^1.0.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "opossum": "^6.2.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
