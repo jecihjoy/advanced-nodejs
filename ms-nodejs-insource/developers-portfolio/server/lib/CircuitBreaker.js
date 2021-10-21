@@ -10,7 +10,6 @@ class CircuitBreaker {
 
   async callService(requestOptions) {
     const endpoint = `${requestOptions.method}:${requestOptions.url}`;
-  
     /* Always block requests when circuit is OPEN*/
     if (!this.canRequest(endpoint)) return false;
 
@@ -48,9 +47,7 @@ class CircuitBreaker {
       state.circuit = "OPEN";
       state.nextTry = new Date() / 1000 + this.cooldownPeriod;
       console.log(`ALERT! Circuit for ${endpoint} is in state 'OPEN'`);
-      console.log(
-        `ALERT! Request retry will happen after ${state.nextTry}`
-      );
+      console.log(`ALERT! Request retry will happen after ${state.nextTry}`);
     }
   }
 
@@ -58,9 +55,9 @@ class CircuitBreaker {
     /* Store current request info in state object*/
     if (!this.states[endpoint]) this.initState(endpoint);
     const state = this.states[endpoint];
-     /* Always allow if the cricuit is CLOSED*/
-    if (state.circuit === "CLOSED") return true; 
-     /* Retry for HALF OPEN circuit*/
+    /* Always allow if the circuit   is CLOSED*/
+    if (state.circuit === "CLOSED") return true;
+    /* Retry when circuit HALF OPEN*/
     const requestTime = new Date() / 1000;
     if (state.nextTry <= requestTime) {
       state.circuit = "HALF";
